@@ -1,5 +1,6 @@
 package murdermansion;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Encapsulates the properties of a 'Character'.  It is a sub-class of the class 'Person'.  Characters are Non-playable players in the game.  They
