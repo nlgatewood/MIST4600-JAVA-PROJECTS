@@ -8,30 +8,29 @@ import java.util.*;
  * @author Nathaniel Gatewood
  * @version 02/28/2017
  */
-public class CardDeck
-{
+public class CardDeck{
+	
     // instance variables - replace the example below with your own
     private ArrayList<Card> deck;
     private ArrayList<String> faces;
     private ArrayList<String> suits;
 
-    /**
-     * Constructor for objects of class CardDeck
-     */
-    public CardDeck()
-    {
+	/*----------------------------------------------------------
+	 * Constructor
+	 *----------------------------------------------------------*/
+    public CardDeck(){
+    	
         //Initialize and populate the faces array
         faces = new ArrayList<String>();
         suits = new ArrayList<String>();
         deck = new ArrayList<Card>();
     }
     
-    /**
-     * .buildDeck().
-     * Create a standard deck of 52 cards and shuffle it twice
-     */
-    public void buildDeck()
-    {
+	/*----------------------------------------------------------
+	 * buildDeck()
+	 *----------------------------------------------------------*/
+    public void buildDeck(){
+    	
         //Initialize and populate the faces array
         faces.add("Two");
         faces.add("Three");
@@ -54,36 +53,36 @@ public class CardDeck
         suits.add("Diamonds");
         
         //Create the card deck.  Loop through suits
-        for(int sIndex=0; sIndex < suits.size(); sIndex++)
-        {
+        for(int sIndex=0; sIndex < suits.size(); sIndex++){
+        	
             //Loop through faces
-            for(int fIndex=0; fIndex < faces.size(); fIndex++)
-            {
+            for(int fIndex=0; fIndex < faces.size(); fIndex++){
+            	
                 //Add the new card to the deck
                 deck.add(new Card(suits.get(sIndex), faces.get(fIndex)));
             }
         }
     }
     
-    /**
-     * .shuffleDeck(int times).
-     * Shuffle the main game deck a specified number of times
-     */
-    public void shuffleDeck(int times)
-    {
+	/*----------------------------------------------------------
+	 * shuffleDeck(int times). Shuffle the main game deck a 
+	 * 						   specified number of times
+	 *----------------------------------------------------------*/
+    public void shuffleDeck(int times){
+    	
         ArrayList<Card> tempDeck;
         Random rand = new Random();
         
         //Shuffle however many times was specified
-        for(int cnt=0; cnt<times; cnt++)
-        {
+        for(int cnt=0; cnt<times; cnt++){
+        	
             int cardCnt = getSize();
             //tempDeck = new CardDeck();
             tempDeck = new ArrayList<Card>();
             
             //Loop through the deck and randomly select cards.  Add to the temp deck
-            for(int i=0; i<cardCnt; i++)
-            {
+            for(int i=0; i<cardCnt; i++){
+            	
                 int  randN = rand.nextInt(getSize());
                 
                 tempDeck.add(getCardByIndex(randN));
@@ -93,8 +92,8 @@ public class CardDeck
             //Add the randomized cards back to the main deck
             cardCnt = tempDeck.size();
             
-            for(int x=0; x<cardCnt; x++)
-            {
+            for(int x=0; x<cardCnt; x++){
+            	
                 addCard(tempDeck.get(x));    
             }
         }
@@ -102,21 +101,19 @@ public class CardDeck
         System.out.println("\nShuffled deck "+times+" times.\n");
     }
     
-    /**
-     * .getDeck().
-     * Return the deck Arraylist
-     */
-    public ArrayList<Card> getDeck()
-    {
+	/*----------------------------------------------------------
+	 * getDeck(). Return the deck Arraylist
+	 *----------------------------------------------------------*/
+    public ArrayList<Card> getDeck(){
+    	
         return deck;
     }
     
-    /**
-     * .drawCard().
-     * Draw a card from the top of the deck (highest index)
-     */
-    public Card drawCard()
-    {
+	/*----------------------------------------------------------
+	 * drawCard(). Draw a card from the top of the deck (highest index)
+	 *----------------------------------------------------------*/
+    public Card drawCard(){
+    	
         Card selCard = null;
         int deckSize = deck.size();
         
@@ -132,14 +129,13 @@ public class CardDeck
         return selCard;
     }
     
-    /**
-     * .addCard(Card pCard).
-     * Add a card to the end of the Deck
-     */
-    public void addCard(Card pCard)
-    {
-        if(deck.size() == 0)
-        {
+	/*----------------------------------------------------------
+	 * addCard(Card pCard). Add a card to the end of the Deck
+	 *----------------------------------------------------------*/
+    public void addCard(Card pCard){
+    	
+        if(deck.size() == 0){
+        	
             deck.add(pCard);
         }
         else if(pCard != null){
@@ -148,41 +144,37 @@ public class CardDeck
         }
     }
     
-    /**
-     * .getCardByIndex(int index).
-     * Returns the card of the specified index
-     */
-    public Card getCardByIndex(int index)
-    {
+	/*----------------------------------------------------------
+	 * getCardByIndex(int index). Returns the card of the specified index
+	 *----------------------------------------------------------*/
+    public Card getCardByIndex(int index){
+    	
         return deck.get(index);
     }
     
-    /**
-     * .removeCardByIndex(int index).
-     * Removes the card of the specified index
-     */
-    public void removeCardByIndex(int index)
-    {
+	/*----------------------------------------------------------
+	 * removeCardByIndex(int index). Removes the card of the specified index
+	 *----------------------------------------------------------*/
+    public void removeCardByIndex(int index){
+    	
         deck.remove(index);    
     }
     
-    /**
-     * .getSize().
-     * Returns the size of the deck
-     */
-    public int getSize()
-    {
+	/*----------------------------------------------------------
+	 * getSize(). Returns the size of the deck
+	 *----------------------------------------------------------*/
+    public int getSize(){
+    	
         return deck.size();    
     }
     
-    /**
-     * .printDeck().
-     * Print all the cards in the deck
-     */
-    public void printDeck()
-    {
-        for(Card card : deck)
-        {
+	/*----------------------------------------------------------
+	 * printDeck(). Print all the cards in the deck
+	 *----------------------------------------------------------*/
+    public void printDeck(){
+    	
+        for(Card card : deck){
+        	
             card.printCard();
         }
     }
