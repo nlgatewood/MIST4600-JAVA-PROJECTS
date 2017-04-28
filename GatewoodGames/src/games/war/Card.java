@@ -15,8 +15,8 @@ public class Card{
 	/*----------------------------------------------------------
 	 * Constructor
 	 *----------------------------------------------------------*/
-    public Card(String pSuit, String pFace)
-    {
+    public Card(String pSuit, String pFace){
+    	
         suit = pSuit;
         face = pFace;
     }
@@ -24,24 +24,24 @@ public class Card{
 	/*----------------------------------------------------------
 	 * getSuit()
 	 *----------------------------------------------------------*/
-    public String getSuit()
-    {
+    public String getSuit(){
+    	
         return suit;
     }
     
 	/*----------------------------------------------------------
 	 * getFace()
 	 *----------------------------------------------------------*/
-    public String getFace()
-    {
+    public String getFace(){
+    	
         return face;
     }
     
 	/*----------------------------------------------------------
 	 * printCard()
 	 *----------------------------------------------------------*/
-    public void printCard()
-    {
+    public void printCard(){
+    	
         System.out.println(face+" of "+suit);
     }
 }

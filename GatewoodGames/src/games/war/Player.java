@@ -36,4 +36,38 @@ public class Player{
     	
         return playerDeck;
     }
+    
+	/*----------------------------------------------------------
+	 * drawCard(). Draw a card from the player's deck
+	 *----------------------------------------------------------*/
+    public Card drawCard(){
+    	
+        Card selCard = null;
+        int deckSize = playerDeck.getDeckSize();
+        
+        //If there's a card to draw, draw it
+        if(deckSize > 0){
+            
+            int cardIndex = deckSize-1;
+            selCard = playerDeck.getCardByIndex(cardIndex);
+        }
+            
+        return selCard;
+    }
+    
+	/*----------------------------------------------------------
+	 * addCard(). Add a card to a player's deck
+	 *----------------------------------------------------------*/
+    public void addCard(Card pCard){
+    	
+    	playerDeck.addCard(pCard);
+    }
+    
+	/*----------------------------------------------------------
+	 * getDeckSize(). Return the player's deck size
+	 *----------------------------------------------------------*/
+    public int getDeckSize(){
+    	
+    	return playerDeck.getDeckSize();
+    }
 }

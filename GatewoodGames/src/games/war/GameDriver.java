@@ -1,6 +1,7 @@
 package games.war;
 
 import java.util.*;
+import games.GamesInterface;
 
 /**
  * WarGame driver class.  Handles the cards game rules and the logic of the gameplay.  In card terms,
@@ -9,13 +10,13 @@ import java.util.*;
  * @author Nathaniel Gatewood 
  * @version 02/28/2017
  */
-public class GameDriver{
+public class GameDriver implements GamesInterface{
 	
     // instance variables
-    private CardDeck deck;
+    private Dealer dealer;
     private Player player1;
     private Player player2;
-    private HashMap<String,Integer> cardRanks;
+    private GameProperties gameProperties;
     Scanner scan = new Scanner(System.in);
     int roundCnt;
 
@@ -23,26 +24,10 @@ public class GameDriver{
 	 * GameDriver(). CONSTRUCTOR
 	 *----------------------------------------------------------*/
     public GameDriver(){
-    	
-        deck = new CardDeck();
-        deck.buildDeck();
+ 
+        dealer = new Dealer();
+        gameProperties = new GameProperties();
         roundCnt = 0;
-        
-        // initialise the Card Ranks.  Used to score each players draw
-        cardRanks = new HashMap<String,Integer>();
-        cardRanks.put("Two", 1);
-        cardRanks.put("Three", 2);
-        cardRanks.put("Four", 3);
-        cardRanks.put("Five", 4);
-        cardRanks.put("Six", 5);
-        cardRanks.put("Seven", 6);
-        cardRanks.put("Eight", 7);
-        cardRanks.put("Nine", 8);
-        cardRanks.put("Ten", 9);
-        cardRanks.put("Jack", 10);
-        cardRanks.put("Queen", 11);
-        cardRanks.put("King", 12);
-        cardRanks.put("Ace", 13);
     }
     
 	/*----------------------------------------------------------
@@ -72,8 +57,8 @@ public class GameDriver{
         playerName = scan.nextLine();
         player2 = new Player(playerName);
         
-        shuffleDeck(3);     //Shuffle the game deck
-        dealCards();        //Deal the cards out to each player
+        dealer.shuffleDeck(3);     				//Shuffle the game deck
+        dealer.dealCards(player1, player2);     //Deal the cards out to each player
         
         playGame();
     }
@@ -81,11 +66,9 @@ public class GameDriver{
 	/*----------------------------------------------------------
 	 * playGame(). Begin a game of war.
 	 *----------------------------------------------------------*/
-    public  void playGame(){
+    private void playGame(){
     	
-        CardDeck player1Deck = player1.getDeck();
-        CardDeck player2Deck = player2.getDeck();
-        boolean winFlag = false;
+        Player winner = null;
         String userInput = " ";
         
         do{
@@ -95,46 +78,34 @@ public class GameDriver{
             if(userInput.equals("s")){
             	
                 System.out.println("\nGame Score:\n"+
-                                    player1.getName()+"(P1): "+player1Deck.getSize()+"    "+player2.getName()+"(P2): "+
-                                    player2Deck.getSize()+"\n");
+                                    player1.getName()+"(P1): "+player1.getDeckSize()+"    "+player2.getName()+"(P2): "+
+                                    player2.getDeckSize()+"\n");
             }
             //Play another round with user input of 'd'
             else if(userInput.equals("")){
-            	
-                roundCnt++;
-                System.out.println("\n==============================================================\nRound "+ roundCnt+"\n");
-            
-                //Play a round of War!
-                playRound();
+                
+                playRound(); //Play a round of War!
+                
+                int player1Score = player1.getDeckSize();
+                int player2Score = player2.getDeckSize();
             
                 //Check to see if anyone has won the game
-                if(getScore(1) == 0 || getScore(2) == 0){
+                if(player1Score == 0 || player2Score == 0){
                 	
-                    String winner = null;
-                
-                    //If player 1s score is > 0, they win
-                    if(getScore(1) > 0){
-                    	
-                        winner = player1.getName()+"(P1)";
-                    }
-                    else if(getScore(2) > 0){
-                    	
-                        winner = player2.getName()+"(P2)";
-                    }
-                
-                    System.out.println("\n"+winner+" wins the game!");
-                    winFlag = true;
+                	winner = (player1Score > 0) ? player1 : player2;
+                	
+                    System.out.println("\n"+winner.getName()+" wins the game!");
                 }
             }
            
             //Get user input to quit or continue to the next round
-            if(!winFlag){
+            if(winner == null){
             	
                 System.out.print("[Draw([Enter]), View Score(s), or Quit(q)> ");
                 userInput = scan.nextLine();
             }
     
-        } while(!winFlag && !userInput.equals("q"));
+        } while(winner == null && !userInput.equals("q"));
         
         System.out.println("\nTHANKS FOR PLAYING WAR!  Have a nice day!");
     }
@@ -143,32 +114,28 @@ public class GameDriver{
 	 * playRound(). Play a round of War.  Each person draws a card.
 	 * 			    The highest wins.
 	 *----------------------------------------------------------*/
-    public void playRound(){
+    private void playRound(){
     	
         //Create a round deck to hold the cards the winner will take
         CardDeck roundDeck = new CardDeck();
+        roundCnt++;
         
         //Get Player1's deck and set their variables
         int player1Rank = 0;
-        CardDeck player1Deck = player1.getDeck();
-        Card player1Card = null;
+        Card player1Card = player1.drawCard();
+        player1Rank = gameProperties.getCardRank(player1Card);
         
         //Get player2's deck and set their variables
         int player2Rank = 0;
-        CardDeck player2Deck = player2.getDeck();
-        Card player2Card = null;
-        
-        //Draw the cards and obtain their rank
-        player1Card = player1Deck.drawCard();
-        player2Card = player2Deck.drawCard();
-        player1Rank = getCardRank(player1Card);
-        player2Rank = getCardRank(player2Card);
+        Card player2Card = player2.drawCard();
+        player2Rank = gameProperties.getCardRank(player2Card);
         
         //Add the two cards to the round's deck
         roundDeck.addCard(player1Card);
         roundDeck.addCard(player2Card);
         
         //Print out the card draw message
+        System.out.println("\n==============================================================\nRound "+ roundCnt+"\n");
         System.out.println(player1.getName()+ getDrawMessage(player1Card, player1Rank));
         System.out.println(player2.getName()+ getDrawMessage(player2Card, player2Rank)+"\n");
         
@@ -179,15 +146,15 @@ public class GameDriver{
             
             do{
                 //Get player 1 cards, rank, and add to roundDeck
-                roundDeck.addCard(player1Deck.drawCard()); // burn card
-                player1Card = player1Deck.drawCard();
-                player1Rank = getCardRank(player1Card);
+                roundDeck.addCard(player1.drawCard()); // burn card
+                player1Card = player1.drawCard();
+                player1Rank = gameProperties.getCardRank(player1Card);
                 roundDeck.addCard(player1Card);
                 
                 //Get player 2 cards, rank, and add to roundDeck
-                roundDeck.addCard(player2Deck.drawCard()); // burn card
-                player2Card = player2Deck.drawCard();
-                player2Rank = getCardRank(player2Card);
+                roundDeck.addCard(player2.drawCard()); // burn card
+                player2Card = player2.drawCard();
+                player2Rank = gameProperties.getCardRank(player2Card);
                 roundDeck.addCard(player2Card);
                 
                 //Print out the card draw message
@@ -204,9 +171,8 @@ public class GameDriver{
             
             for(Card roundCard : roundDeck.getDeck()){
             	
-                player1Deck.addCard(roundCard);    
+                player1.addCard(roundCard);    
             }
-            
         }
         //If Player 2 wins the round, add the round's deck to their deck
         else if(player1Rank < player2Rank){
@@ -215,7 +181,7 @@ public class GameDriver{
             
             for(Card roundCard : roundDeck.getDeck()){
             	
-                player2Deck.addCard(roundCard);    
+                player2.addCard(roundCard);    
             }
         }
         
@@ -223,54 +189,11 @@ public class GameDriver{
     }
     
 	/*----------------------------------------------------------
-	 * shuffleDeck(int times). Shuffle the main game deck a 
-	 * 						   specified number of times
-	 *----------------------------------------------------------*/
-    public void shuffleDeck(int times){
-    	
-       deck.shuffleDeck(times);
-    }
-    
-	/*----------------------------------------------------------
-	 * dealCards(). Deal out the cards to each of the players. 
-	 * 				Each player should get 26 cards each
-	 *----------------------------------------------------------*/
-    public void dealCards(){
-    	
-        int deckSize = deck.getSize();
-        
-        for(int i=0; i<deckSize; i++){
-        	
-            Card nextCard = deck.drawCard();
-            
-            //Give player1 even cards
-            if(i%2 == 0){
-            	
-                player1.getDeck().addCard(nextCard);    
-            }
-            //Give player2 odd cards
-            else{
-            	
-               player2.getDeck().addCard(nextCard);   
-            }
-        }
-    }
-    
-	/*----------------------------------------------------------
-	 * getCardRank(). Get the specified card's game rank.  If a
-	 * 				  null card is passed, keep the rank at 0
-	 *----------------------------------------------------------*/
-    public int getCardRank(Card playerCard){
-    	
-        return ( (playerCard != null) ? cardRanks.get(playerCard.getFace()) : 0 );
-    }
-    
-	/*----------------------------------------------------------
 	 * getDrawMessage(Card playerCard, int cardRank). Get the 
 	 * 				  		specified card's game rank.  If a
 	 * 				  		null card is passed, keep the rank at 0
 	 *----------------------------------------------------------*/
-    public String getDrawMessage(Card playerCard, int cardRank){
+    private static String getDrawMessage(Card playerCard, int cardRank){
     	
         String playerMessage = "";
         
@@ -285,25 +208,5 @@ public class GameDriver{
         }
         
         return playerMessage;
-    }
-    
-	/*----------------------------------------------------------
-	 * getScores(int playerNum). Get the score (card count) of the 
-	 * 							 specified player
-	 *----------------------------------------------------------*/
-    public int getScore(int playerNum){
-    	
-        int score = -1;
-        
-        if(playerNum == 1){
-        	
-            score = player1.getDeck().getSize();
-        }
-        else if(playerNum == 2){
-        	
-            score = player2.getDeck().getSize();
-        }
-        
-        return score;
     }
 }

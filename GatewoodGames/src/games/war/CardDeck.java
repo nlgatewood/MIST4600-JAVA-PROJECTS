@@ -65,48 +65,26 @@ public class CardDeck{
     }
     
 	/*----------------------------------------------------------
-	 * shuffleDeck(int times). Shuffle the main game deck a 
-	 * 						   specified number of times
-	 *----------------------------------------------------------*/
-    public void shuffleDeck(int times){
-    	
-        ArrayList<Card> tempDeck;
-        Random rand = new Random();
-        
-        //Shuffle however many times was specified
-        for(int cnt=0; cnt<times; cnt++){
-        	
-            int cardCnt = getSize();
-            //tempDeck = new CardDeck();
-            tempDeck = new ArrayList<Card>();
-            
-            //Loop through the deck and randomly select cards.  Add to the temp deck
-            for(int i=0; i<cardCnt; i++){
-            	
-                int  randN = rand.nextInt(getSize());
-                
-                tempDeck.add(getCardByIndex(randN));
-                removeCardByIndex(randN);
-            }
-            
-            //Add the randomized cards back to the main deck
-            cardCnt = tempDeck.size();
-            
-            for(int x=0; x<cardCnt; x++){
-            	
-                addCard(tempDeck.get(x));    
-            }
-        }
-
-        System.out.println("\nShuffled deck "+times+" times.\n");
-    }
-    
-	/*----------------------------------------------------------
 	 * getDeck(). Return the deck Arraylist
 	 *----------------------------------------------------------*/
     public ArrayList<Card> getDeck(){
     	
         return deck;
+    }
+    
+	/*----------------------------------------------------------
+	 * addCard(Card pCard). Add a card to the end of the Deck
+	 *----------------------------------------------------------*/
+    public void addCard(Card pCard){
+    	
+        if(deck.size() == 0){
+        	
+            deck.add(pCard);
+        }
+        else if(pCard != null){
+            
+            deck.add(0,pCard);
+        }
     }
     
 	/*----------------------------------------------------------
@@ -130,40 +108,20 @@ public class CardDeck{
     }
     
 	/*----------------------------------------------------------
-	 * addCard(Card pCard). Add a card to the end of the Deck
-	 *----------------------------------------------------------*/
-    public void addCard(Card pCard){
-    	
-        if(deck.size() == 0){
-        	
-            deck.add(pCard);
-        }
-        else if(pCard != null){
-            
-            deck.add(0,pCard);
-        }
-    }
-    
-	/*----------------------------------------------------------
 	 * getCardByIndex(int index). Returns the card of the specified index
 	 *----------------------------------------------------------*/
     public Card getCardByIndex(int index){
     	
-        return deck.get(index);
-    }
-    
-	/*----------------------------------------------------------
-	 * removeCardByIndex(int index). Removes the card of the specified index
-	 *----------------------------------------------------------*/
-    public void removeCardByIndex(int index){
+    	Card thisCard = deck.get(index);
+    	deck.remove(index);
     	
-        deck.remove(index);    
+        return thisCard;
     }
     
 	/*----------------------------------------------------------
-	 * getSize(). Returns the size of the deck
+	 * getDeckSize(). Returns the size of the deck
 	 *----------------------------------------------------------*/
-    public int getSize(){
+    public int getDeckSize(){
     	
         return deck.size();    
     }

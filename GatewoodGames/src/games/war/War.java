@@ -8,17 +8,16 @@ import games.GamesInterface;
  * @author Nathaniel Gatewood
  * @version 02/28/2017
  */
-public class War implements GamesInterface
-{
-    // instance variables - replace the example below with your own
-    private GameDriver gameDriver;
-
+public class War implements GamesInterface{
+	
+	private GameDriver warGame;
+	
 	/*----------------------------------------------------------
 	 * War(). CONSTRUCTOR
 	 *----------------------------------------------------------*/
     public War(){
     	
-        gameDriver = new GameDriver();
+    	warGame = new GameDriver();
     }
     
 	/*----------------------------------------------------------
@@ -27,6 +26,6 @@ public class War implements GamesInterface
     public void startGame()
     {
         //Play game
-        gameDriver.startGame();
+        warGame.startGame();
     }
 }
