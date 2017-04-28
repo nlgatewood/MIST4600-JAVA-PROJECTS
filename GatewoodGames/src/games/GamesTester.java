@@ -9,6 +9,7 @@ public class GamesTester {
 
 	public static void main(String[] args) {
 		
+		GamesInterface game;
 		boolean quitGames = false;
 		Scanner input = new Scanner(System.in);
 		int userInput = -1;
@@ -34,13 +35,14 @@ public class GamesTester {
 				
 			switch(userInput){
 				case 1: 
-					new Bingo().startGame();
+					game = new Bingo();
+					game.startGame();
 					printGameHeading();
 					break;
 				case 2:
-					new War().startGame();
+					game = new War();
+					game.startGame();
 					printGameHeading();
-					break;
 				case 9:
 					quitGames = true;
 					break;
@@ -52,8 +54,6 @@ public class GamesTester {
 		}while(!quitGames);
 		
 		System.out.println("Thank you for playing!  Goodbye!");
-		
-		input.close();
 	}
 	
 	/*----------------------------------------------------------
