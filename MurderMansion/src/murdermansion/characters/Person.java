@@ -1,4 +1,4 @@
-package murdermansion;
+package murdermansion.characters;
 
 /**
  * Write a description of class Person here.

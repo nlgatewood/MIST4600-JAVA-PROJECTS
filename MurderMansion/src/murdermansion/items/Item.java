@@ -1,4 +1,7 @@
-package murdermansion;
+package murdermansion.items;
+
+import murdermansion.command.Command;
+import murdermansion.command.CommandWords;
 
 /**
  * Class 'Item'. Encapsulates the properties of an 'item'.  Items can be used, exist in a map zone, or exist in a player's inventory.

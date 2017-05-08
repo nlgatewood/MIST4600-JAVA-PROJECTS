@@ -1,4 +1,5 @@
-package murdermansion;
+package murdermansion.items;
+
 import java.util.*;
 
 /**

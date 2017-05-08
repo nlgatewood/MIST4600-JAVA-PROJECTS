@@ -1,4 +1,5 @@
-package murdermansion;
+package murdermansion.characters;
+
 import java.util.ArrayList;
 import java.util.Random;
 

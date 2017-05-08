@@ -1,5 +1,7 @@
-package murdermansion;
-import java.util.*;
+package murdermansion.characters;
+
+import murdermansion.items.Item;
+import java.util.ArrayList;
 
 /**
  * Encapsulates the properties of a 'Player'.  It is a sub-class of the class 'Person'.  'players' are human playable players in the game.  They

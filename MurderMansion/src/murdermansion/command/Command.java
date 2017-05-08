@@ -1,4 +1,4 @@
-package murdermansion;
+package murdermansion.command;
 /**
 
  *

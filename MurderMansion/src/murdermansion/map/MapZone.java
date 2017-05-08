@@ -1,5 +1,8 @@
-package murdermansion;
+package murdermansion.map;
 import java.util.*;
+
+import murdermansion.characters.Character;
+import murdermansion.items.Item;
 
 /**
  * Encapsulates the attributes of a 'Game Zone'.  Each room is contained in a 'GameZone' object.  Attributes include the zone name, zone characters, and 

@@ -1,5 +1,13 @@
 package murdermansion;
-import java.util.*;
+
+import murdermansion.characters.Player;
+import murdermansion.characters.Character;
+import murdermansion.characters.SuspectCharacters;
+import murdermansion.command.*;
+import murdermansion.items.*;
+import murdermansion.map.*;
+
+import java.util.Scanner;
 
 /**
  * Game Session class is the driver of the game. Each game is encapsulated in one session object.  The session keeps track of all of the 

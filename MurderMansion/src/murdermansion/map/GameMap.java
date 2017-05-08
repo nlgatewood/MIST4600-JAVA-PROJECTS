@@ -1,5 +1,13 @@
-package murdermansion;
-import java.util.*;
+package murdermansion.map;
+
+import murdermansion.characters.Character;
+import murdermansion.characters.SuspectCharacters;
+import murdermansion.items.Item;
+import murdermansion.items.WeaponItems;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Random;
 
 /**
  * Encapsulates the attributes of the Game Map.  Builds the game map using map zones.  Also contains methods to add items and characters to 
