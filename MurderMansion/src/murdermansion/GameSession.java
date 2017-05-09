@@ -109,6 +109,7 @@ public abstract class GameSession
         boolean wantToQuit = false;
 
         if(command.isUnknown()) {
+        	
             System.out.println("I don't know what you mean...");
             return false;
         }
@@ -362,7 +363,6 @@ public abstract class GameSession
          else{
             System.out.println("You don't have a "+secondWord+" to drop");    
          }
-         
      }
         
     /**-------------------------------------------------------------------------------*
