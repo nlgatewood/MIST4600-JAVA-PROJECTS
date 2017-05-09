@@ -288,8 +288,8 @@ public class GameMap
         }
         
         //Add other Items not Weapons Items here...
-        map.get("2-3").addZoneItem(new Item("Guest Log", "Guest Log\n--------\nCol. Mustard\nMiss Scarlet\n"+
-                                            "Professor Plum\nMr. Green\nMrs. White\nMrs. Peacock\n--------", null, "inspect", "Guest Log"));
+        map.get("2-3").addZoneItem(new Item("Guest Log", "Guest Log\n--------\nMiss Redding\nColonel Lugar\n"+
+                                            "Mrs. Maroon\nMr. Mauve\nMrs. Chicken\nProfessor Plunk\n--------", null, "inspect", "Guest Log"));
         map.get("2-3").addZoneItem(new Item("Black Mirror", "An old black mirror.  Something seems odd about it...", "Woosh!  You get swept away across the mansion!", "warp", "1-4"));
         map.get("6-3").addZoneItem(new Item("Inventory List", "Inventory\n----------\nCandlestick\nKnife\nRope\nWrench\nRevolver\nLead Pipe\n----------", null, "inspect", "Inventory List"));
      }

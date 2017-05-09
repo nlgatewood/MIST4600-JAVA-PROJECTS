@@ -16,6 +16,7 @@ import java.util.Scanner;
  * @author Nathaniel Gatewood and Donna Mobley
  * @date 04/15/2017
  */
+
 public abstract class GameSession
 {
     private Parser parser;
@@ -25,10 +26,10 @@ public abstract class GameSession
     
     private SuspectCharacters suspectCharacters;
     private WeaponItems weaponItems;
-    
     private Character murdererCharacter;
     private Item murderItem;
     private MapZone murderZone;
+    
     private Scanner scan;
     
     /**-------------------------------------------------------------------------------*
@@ -49,14 +50,13 @@ public abstract class GameSession
      **-------------------------------------------------------------------------------*/
      public void startGame(){
          
-         currentZone = gameMap.buildMap();       //Build the map - return the current zone
+         currentZone = gameMap.buildMap();       						//Build the map - return the current zone
+         murdererCharacter = suspectCharacters.getMurdererCharacter();	// Randomly get the murderer
+         murderItem = weaponItems.getMurderItem(); 						// Randomly return the murder weapon
+         murderZone = gameMap.getMurderRoom();   						// Randomly return the Murder room
          
-         murdererCharacter = suspectCharacters.getMurdererCharacter();
-         murderItem = weaponItems.getMurderItem(); //Return the murder item
-         murderZone = gameMap.getMurderRoom();   // Return the murder zone
-         
-         gameMap.addGameMapCharacters(suspectCharacters);
-         gameMap.addGameMapItems(weaponItems);     //Add the other items to the map
+         gameMap.addGameMapCharacters(suspectCharacters);				// Add Characters to the map
+         gameMap.addGameMapItems(weaponItems);     						// Add the other items to the map
          
          System.out.println("---------------------------------------------------------------------------------------------------------\n"+
                             "*\n"+
@@ -69,10 +69,9 @@ public abstract class GameSession
                             "*room gathering items and talking with other house guests. Once you think you have figured out the case,\n"+
                             "*try and solve it!  It's up to you to make sure a murderer doesn't go free.\n"+
                             "---------------------------------------------------------------------------------------------------------\n");
-                            
-         System.out.print("Enter Player Name: ");
          
-         //playerName = scan.nextLine();
+         //Get the player name and create the new player Object
+         System.out.print("Enter Player Name: ");
          player = new Player(scan.nextLine());
          
          play();
@@ -91,6 +90,7 @@ public abstract class GameSession
         //Start off by talking to your partner
         processCommand(new Command("talk", "Wohn Jatson"));
         
+        // Continue playing until 'finished' marker is true
         while(!finished){
             
             Command command = parser.getCommand();
@@ -115,47 +115,58 @@ public abstract class GameSession
 
         String commandWord = command.getCommandWord();
         
+        // Command 'help' - Prints help screen
         if(commandWord.equals("help")) {
             
             printHelp(command);
         }
+        // Command 'go' - Moves the character across zones
         else if(commandWord.equals("go")) {
             goRoom(command);
         }
+        // Command 'inspect' - view item/area/character details
         else if(commandWord.equals("inspect")){
         
             inspect(command);
         }
+        // Command 'use' - use an item
         else if(commandWord.equals("use")) {
         
             use(command);
         }
+        // Command 'take' - Take an item from the area and put it in your inventory
         else if(commandWord.equals("take")) {
         
             take(command);
         }
+        // Command 'drop' - Drop an item from your inventory into the area
         else if(commandWord.equals("drop")) {
             
             drop(command);
         }
+        // Command 'talk' - Talk to the specified character
         else if(commandWord.equals("talk")) {
         
             talk(command);
         }
+        // Command 'solve' - Solve the case
         else if(commandWord.equals("solve")) {
         
             solve(command);
         }
+        // Command 'drink' - Drink an item
         else if(commandWord.equals("drink")){
         
             drink(command);
         }
+        // Command 'quit' - Quit the game
         else if(commandWord.equals("quit")) {
             
             wantToQuit = quit(command);
         }
         //Item commands below
         //-------------------
+        // Command 'warp' - warp across the map
         else if(commandWord.equals("warp")){
         
             warp(command);
