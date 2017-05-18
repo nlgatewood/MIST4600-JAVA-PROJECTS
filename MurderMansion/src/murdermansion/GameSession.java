@@ -90,6 +90,10 @@ public abstract class GameSession
         //Start off by talking to your partner
         processCommand(new Command("talk", "Wohn Jatson"));
         
+        System.out.println(murdererCharacter.getPlayerName()+"\n"+
+        				   murderItem.getItemName()+"\n"+
+        				   murderZone.getZoneName());
+        
         // Continue playing until 'finished' marker is true
         while(!finished){
             
@@ -133,7 +137,7 @@ public abstract class GameSession
         // Command 'use' - use an item
         else if(commandWord.equals("use")) {
         
-            use(command);
+        	wantToQuit = use(command);
         }
         // Command 'take' - Take an item from the area and put it in your inventory
         else if(commandWord.equals("take")) {
@@ -153,12 +157,12 @@ public abstract class GameSession
         // Command 'solve' - Solve the case
         else if(commandWord.equals("solve")) {
         
-            solve(command);
+        	wantToQuit = solve(command);
         }
         // Command 'drink' - Drink an item
         else if(commandWord.equals("drink")){
         
-            drink(command);
+        	wantToQuit = drink(command);
         }
         // Command 'quit' - Quit the game
         else if(commandWord.equals("quit")) {
@@ -289,16 +293,17 @@ public abstract class GameSession
     /**-------------------------------------------------------------------------------*
      * .use(). When the command word 'use' is typed.
      **-------------------------------------------------------------------------------*/
-     private void use(Command command){
+     private boolean use(Command command){
      
         if(!command.hasSecondWord()){
             
             System.out.println("Use What?");
-            return;
+            return false;
         }
         
         String commandWord = command.getCommandWord();
         String secondWord = command.getSecondWord();
+        boolean toQuit = false;
         
         //Get the items from the person's bag and process the command
         Item thisItem = player.getPlayerItem(secondWord);
@@ -309,18 +314,8 @@ public abstract class GameSession
             	
         		thisItem.printItemActionDescription(commandWord);
         		Command itemCommand = thisItem.getItemCommand(commandWord);
-        		boolean toQuit = false;
-        		
-        		if(!itemCommand.isUnknown()){
-        			
-        			toQuit = processCommand(thisItem.getItemCommand(commandWord));
-        		}
-            
-            	if(toQuit == true){
-            
-            		System.out.println("Thank you for playing.  Good bye.");
-            		System.exit(0);
-            	}
+
+        		toQuit = processCommand(itemCommand);
         	}
         	else{
         		System.out.println("You can't "+commandWord+" this item!");
@@ -329,6 +324,8 @@ public abstract class GameSession
         else{
             System.out.println("Item "+secondWord+" not found in inventory");
         }
+        
+        return toQuit;
      }
      
     /**-------------------------------------------------------------------------------*
@@ -407,15 +404,16 @@ public abstract class GameSession
      * .solve(). When the command word 'solve' is typed.  Let's you guess who, where, and
      *           and with what
      **-------------------------------------------------------------------------------*/
-     private void solve(Command command){
+     private boolean solve(Command command){
      
          if(!command.hasSecondWord()){
          
              System.out.println("Solve what?");
-             return;
+             return false;
          }
          
          String secondWord = command.getSecondWord();
+         boolean toQuit = false;
          
          if(secondWord.equals("case")){
              
@@ -446,7 +444,7 @@ public abstract class GameSession
                                            "definitely say Mr. Beard was killed by "+characterGuess+" with the "+weaponGuess+
                                            "in the "+roomGuess+"!\"\n");
                                            
-                        processCommand(new Command("quit",null));
+                        toQuit = true;
                  }
                  else{
                      System.out.println("Well, I've looked at this carefully...and I just don't think this fits, "+player.getPlayerName()+
@@ -460,21 +458,24 @@ public abstract class GameSession
          else{
              System.out.println("You can not solve "+secondWord);
          }
+         
+         return toQuit;
      }
      
     /**-------------------------------------------------------------------------------*
      * .drink(). When the command word 'drink' is typed.
      **-------------------------------------------------------------------------------*/
-     private void drink(Command command){
+     private boolean drink(Command command){
      
         if(!command.hasSecondWord()){
          
              System.out.println("Drink what?");
-             return;
+             return false;
         }
         
         String commandWord = command.getCommandWord();
         String secondWord = command.getSecondWord();
+        boolean toQuit = false;
         Item thisItem = player.getPlayerItem(secondWord);
         
         if(thisItem != null){
@@ -483,18 +484,8 @@ public abstract class GameSession
         	
         		thisItem.printItemActionDescription(commandWord);
         		Command itemCommand = thisItem.getItemCommand(commandWord);
-        		boolean toQuit = false;
-        		
-        		if(!itemCommand.isUnknown()){
         			
-        			toQuit = processCommand(thisItem.getItemCommand(commandWord));
-        		}
-            
-            	if(toQuit == true){
-            
-            		System.out.println("Thank you for playing.  Good bye.");
-            		System.exit(0);
-            	}
+        		toQuit = processCommand(itemCommand);
         	}
         	else{
         		System.out.println("You can't "+commandWord+" this item!");
@@ -503,6 +494,8 @@ public abstract class GameSession
         else{
             System.out.println("Item "+secondWord+" not found");
         }
+        
+        return toQuit;
      }
     /**-------------------------------------------------------------------------------*
      * .quit(). When the command word 'quit' is typed.  Quits the game
