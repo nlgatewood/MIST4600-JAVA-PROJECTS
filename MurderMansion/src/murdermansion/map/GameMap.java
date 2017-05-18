@@ -289,9 +289,13 @@ public class GameMap
         
         //Add other Items not Weapons Items here...
         map.get("2-3").addZoneItem(new Item("Guest Log", "Guest Log\n--------\nMiss Redding\nColonel Lugar\n"+
-                                            "Mrs. Maroon\nMr. Mauve\nMrs. Chicken\nProfessor Plunk\n--------", null, "inspect", "Guest Log"));
-        map.get("2-3").addZoneItem(new Item("Black Mirror", "An old black mirror.  Something seems odd about it...", "Woosh!  You get swept away across the mansion!", "warp", "1-4"));
-        map.get("6-3").addZoneItem(new Item("Inventory List", "Inventory\n----------\nCandlestick\nKnife\nRope\nWrench\nRevolver\nLead Pipe\n----------", null, "inspect", "Inventory List"));
+                                            "Mrs. Maroon\nMr. Mauve\nMrs. Chicken\nProfessor Plunk\n--------",
+                                            new String[] {"use", "inspect", "Guest Log", null}));
+        map.get("2-3").addZoneItem(new Item("Black Mirror", "An old black mirror.  Something seems odd about it...", 
+        									new String[] {"use", "warp", "1-4","Woosh! You get swept away across the mansion!"}));
+        map.get("6-3").addZoneItem(new Item("Inventory List", 
+        									"Inventory\n----------\nCandlestick\nKnife\nRope\nWrench\nRevolver\nLead Pipe\n----------", 
+        									new String[] {"use", "inspect", "Inventory List", null}));
      }
      
     /**-------------------------------------------------------------------------------*
@@ -320,10 +324,13 @@ public class GameMap
         ArrayList<MapZone> murderRooms = getMurderRoomsList();
         int randRoom = rand.nextInt(murderRooms.size());
         
-        murderRooms.get(randRoom).addZoneItem(new Item("Bottle of Bleach", "Why is there a bottle of bleach here?!  It's all over the floor.  Was somebody trying to clean something up?", 
-                                                       "Well, that was stupid...You black out and stumble over...you dead", "quit", null));
-        murderRooms.get(randRoom).addZoneItem(new Item("Bloody Rag", "This rag is soaked in blood! It also has a monogramed 'B' in one of the corners.  Could this be Mr. Beard's?", 
-                                                       null, "inspect", "Bloody Rag"));
+        murderRooms.get(randRoom).addZoneItem(new Item("Bottle of Bleach", 
+        										"Why is there a bottle of bleach here?!  It's all over the floor.  Was somebody trying to clean something up?", 
+                                                new String[] {"drink", "quit", null," Well, that was stupid...You black out and stumble over...you dead"}));
+        
+        murderRooms.get(randRoom).addZoneItem(new Item("Bloody Rag", 
+        											   "This rag is soaked in blood! It also has a monogramed 'B' in one of the corners.  Could this be Mr. Beard's?", 
+                                                       new String[] {}));
         
         return murderRooms.get(randRoom);
     }

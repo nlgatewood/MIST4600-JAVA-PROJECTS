@@ -289,27 +289,42 @@ public abstract class GameSession
     /**-------------------------------------------------------------------------------*
      * .use(). When the command word 'use' is typed.
      **-------------------------------------------------------------------------------*/
-     private void use(Command pCommand){
+     private void use(Command command){
      
-        if(!pCommand.hasSecondWord()){
+        if(!command.hasSecondWord()){
             
             System.out.println("Use What?");
             return;
         }
         
-        String secondWord = pCommand.getSecondWord();
+        String commandWord = command.getCommandWord();
+        String secondWord = command.getSecondWord();
         
         //Get the items from the person's bag and process the command
         Item thisItem = player.getPlayerItem(secondWord);
         
         if(thisItem != null){
             
-            thisItem.printItemActionDescription();
+        	if(thisItem.hasCommandWord(commandWord)){
+            	
+        		thisItem.printItemActionDescription(commandWord);
+        		Command itemCommand = thisItem.getItemCommand(commandWord);
+        		boolean toQuit = false;
+        		
+        		if(!itemCommand.isUnknown()){
+        			
+        			toQuit = processCommand(thisItem.getItemCommand(commandWord));
+        		}
             
-            if(thisItem.getItemCommand().getCommandWord() != null){
-                
-                processCommand(thisItem.getItemCommand());
-            }
+            	if(toQuit == true){
+            
+            		System.out.println("Thank you for playing.  Good bye.");
+            		System.exit(0);
+            	}
+        	}
+        	else{
+        		System.out.println("You can't "+commandWord+" this item!");
+        	}
         }
         else{
             System.out.println("Item "+secondWord+" not found in inventory");
@@ -457,20 +472,33 @@ public abstract class GameSession
              System.out.println("Drink what?");
              return;
         }
-         
+        
+        String commandWord = command.getCommandWord();
         String secondWord = command.getSecondWord();
         Item thisItem = player.getPlayerItem(secondWord);
         
         if(thisItem != null){
             
-            thisItem.printItemActionDescription();
-            boolean toQuit = processCommand(thisItem.getItemCommand());
+        	if(thisItem.hasCommandWord(commandWord)){
+        	
+        		thisItem.printItemActionDescription(commandWord);
+        		Command itemCommand = thisItem.getItemCommand(commandWord);
+        		boolean toQuit = false;
+        		
+        		if(!itemCommand.isUnknown()){
+        			
+        			toQuit = processCommand(thisItem.getItemCommand(commandWord));
+        		}
             
-            if(toQuit == true){
+            	if(toQuit == true){
             
-                System.out.println("Thank you for playing.  Good bye.");
-                System.exit(0);
-            }
+            		System.out.println("Thank you for playing.  Good bye.");
+            		System.exit(0);
+            	}
+        	}
+        	else{
+        		System.out.println("You can't "+commandWord+" this item!");
+        	}
         }
         else{
             System.out.println("Item "+secondWord+" not found");
